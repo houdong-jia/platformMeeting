@@ -2,14 +2,18 @@
     "version": "1.0.0",
     "lasttime": "2022-07-07 17:28:23",
     "author": "申龙",
-    "className": "basics",
-    "module": [
-        {
-            "classId": "idm.component.basics.text",
-            "comName": "文本",
-            "className": "IText",
-            "comType": "common",
-            "comLangue": "vue"
-        }
-    ]
+    "className": "platformMeeting",
+    "module": [{
+        "classId": "idm.component.platformMeeting.meetingInfo",
+        "comName": "会议个人信息",
+        "className": "IMeetingInfo",
+        "comType": "common",
+        "comLangue": "vue"
+    }, {
+        "classId": "idm.component.platformMeeting.tabs",
+        "comName": "tab页签",
+        "className": "ITabs",
+        "comType": "common",
+        "comLangue": "vue"
+    }]
 }

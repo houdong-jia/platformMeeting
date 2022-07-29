@@ -4,8 +4,7 @@
     "className": "IText",
     "comType": "common",
     "comLangue": "vue",
-    "compositeAttr": [
-        {
+    "compositeAttr": [{
             "type": "input",
             "layoutType": "inline",
             "text": "唯一标识",
@@ -19,8 +18,7 @@
             "type": "group",
             "text": "基本属性",
             "desc": "提供设置组件能达到展示效果的基本属性设置信息",
-            "children": [
-                {
+            "children": [{
                     "type": "textarea",
                     "layoutType": "inline",
                     "text": "文本内容",
@@ -40,8 +38,7 @@
                     "layoutType": "inline",
                     "text": "默认状态",
                     "bindKey": "defaultStatus",
-                    "dictionary": [
-                        {
+                    "dictionary": [{
                             "label": "普通",
                             "value": "default"
                         },
@@ -59,8 +56,7 @@
             "text": "样式设置",
             "desc": "点击？查看样式设置用法指南",
             "helpUrl": "",
-            "children": [
-                {
+            "children": [{
                     "type": "box",
                     "layoutType": "block",
                     "text": "内外边距",
@@ -69,8 +65,7 @@
                 {
                     "type": "inlineGroup",
                     "text": "宽高",
-                    "children": [
-                        {
+                    "children": [{
                             "type": "input",
                             "layoutType": "block",
                             "text": "宽",
@@ -95,8 +90,7 @@
                     "text": "背景设置",
                     "desc": "点击？查看背景设置用法指南",
                     "helpUrl": "",
-                    "children": [
-                        {
+                    "children": [{
                             "type": "colorPicker",
                             "layoutType": "inline",
                             "text": "背景色",
@@ -116,8 +110,7 @@
                             "layoutType": "inline",
                             "text": "横向偏移",
                             "bindKey": "positionX",
-                            "dictionary": [
-                                {
+                            "dictionary": [{
                                     "label": "px",
                                     "value": "px"
                                 },
@@ -137,8 +130,7 @@
                             "layoutType": "inline",
                             "text": "纵向偏移",
                             "bindKey": "positionY",
-                            "dictionary": [
-                                {
+                            "dictionary": [{
                                     "label": "px",
                                     "value": "px"
                                 },
@@ -158,8 +150,7 @@
                             "layoutType": "block",
                             "text": "背景大小",
                             "bindKey": "bgSize",
-                            "dictionary": [
-                                {
+                            "dictionary": [{
                                     "label": "裁切显示",
                                     "value": "cover"
                                 },
@@ -179,8 +170,7 @@
                             "layoutType": "inline",
                             "text": "宽度",
                             "bindKey": "bgSizeWidth",
-                            "dictionary": [
-                                {
+                            "dictionary": [{
                                     "label": "px",
                                     "value": "px"
                                 },
@@ -200,8 +190,7 @@
                             "layoutType": "inline",
                             "text": "高度",
                             "bindKey": "bgSizeHeight",
-                            "dictionary": [
-                                {
+                            "dictionary": [{
                                     "label": "px",
                                     "value": "px"
                                 },
@@ -221,8 +210,7 @@
                             "layoutType": "block",
                             "text": "平铺模式",
                             "bindKey": "bgRepeat",
-                            "dictionary": [
-                                {
+                            "dictionary": [{
                                     "label": "双向重复",
                                     "value": "repeat"
                                 },
@@ -250,8 +238,7 @@
                             "layoutType": "inline",
                             "text": "背景模式",
                             "bindKey": "bgAttachment",
-                            "dictionary": [
-                                {
+                            "dictionary": [{
                                     "label": "固定",
                                     "value": "fixed"
                                 },
@@ -286,8 +273,7 @@
             "type": "group",
             "text": "高级",
             "desc": "点击？查看高级设置用法指南",
-            "children": [
-                {
+            "children": [{
                     "type": "actionSelect",
                     "layoutType": "block",
                     "text": "点击时动作",
@@ -301,8 +287,7 @@
                     "text": "动态内容",
                     "bindKey": "dataSourceType",
                     "desc": "通过这些方式去动态获取结果值显示成文本内容",
-                    "dictionary": [
-                        {
+                    "dictionary": [{
                             "label": "自定义接口",
                             "value": "customInterface"
                         },
