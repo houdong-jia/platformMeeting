@@ -13,8 +13,8 @@
       idm-ctrl-id：组件的id，这个必须不能为空
       idm-container-index  组件的内部容器索引，不重复唯一且不变，必选，建议从1开始
     -->
-        <van-tabs v-model="active" :animated="propData.animated!==false?true:false" :size="propData.size||'default'" :tabPosition="propData.tabPosition||'top'" :type="propData.type||'line'" :tabBarGutter="propData.tabBarGutter==0?0:(propData.tabBarGutter||null)" :tabBarStyle="getTabStyleObject()" @change="changeCallback" @nextClick="nextClickCallback" @prevClick="prevClickCallback" @tabClick="tabClickCallback">
-            <van-tab title="标签 1">内容 1</van-tab>
+        <van-tabs v-model="activeTab" :animated="propData.animated!==false?true:false" :size="propData.size||'default'" :tabPosition="propData.tabPosition||'top'" :type="propData.type||'line'" :background='propData.bgColor.hex8' :title-active-color='propData.activeColor.hex8' @click='tabClickCallback'>
+            <van-tab v-for="item in tabList" :key="item.key" :title="getTitle(item)" :name='item.key' :dot='item.isShowDot' :isShowNum='item.isShowNum'>内容 1</van-tab>
         </van-tabs>
         <!-- <layout-a-tabs :activeKey="activeTab" :animated="propData.animated!==false?true:false" :size="propData.size||'default'" :tabPosition="propData.tabPosition||'top'" :type="propData.type||'line'" :tabBarGutter="propData.tabBarGutter==0?0:(propData.tabBarGutter||null)" :tabBarStyle="getTabStyleObject()" @change="changeCallback" @nextClick="nextClickCallback" @prevClick="prevClickCallback" @tabClick="tabClickCallback">
             <layout-a-tab-pane forceRender v-for="item in tabList" :key="item.key">
@@ -32,7 +32,6 @@
         </layout-a-tabs> -->
     </div>
 </template>
-
 <script>
 export default {
     name: 'ITabs',
@@ -41,54 +40,32 @@ export default {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {},
             innerAttr: this.$root.propData.innerAttr || [],
-            active: "2",
+            activeTab: "",
             tabList: []
         }
     },
     props: {
     },
     created () {
-        //this.moduleObject = this.$root.moduleObject
+        this.moduleObject = this.$root.moduleObject
         // console.log(this.moduleObject)
-        //this.initAttrToModule();
+        this.initAttrToModule();
     },
     mounted () {
     },
     destroyed () { },
-    methods: {
-        /**
-         * 切换面板的回调
-         */
-        changeCallback (key) {
-            let that = this;
-            this.activeTab = key;
-            this.tabList.forEach(item => {
-                if (this.activeTab == item.key) {
-                    if (!item.opened) {
-                        item.opened = true;
-                        that.$nextTick(function (params) {
-                            //去加载内部组件
-                            that.moduleObject.moduleReload && that.moduleObject.moduleReload(that.moduleObject.packageid, item.key);
-                        })
-                    }
-                    // item.opened = true;
+    computed: {
+        getTitle () {
+            return (item) => {
+                if (item.isShowNum) {
+                    return `${item.tab}(2)`
+                } else {
+                    return item.tab
                 }
-            })
-
-            this.changeEventFunHandle("changeFunction");
-        },
-        /**
-         * next 按钮被点击的回调	
-         */
-        nextClickCallback () {
-            this.changeEventFunHandle("nextClickFunction");
-        },
-        /**
-         * prev 按钮被点击的回调	
-         */
-        prevClickCallback () {
-            this.changeEventFunHandle("prevClickFunction");
-        },
+            }
+        }
+    },
+    methods: {
         /**
          * tab 被点击的回调	
          */
@@ -99,19 +76,16 @@ export default {
          * 通用自定义函数
          */
         changeEventFunHandle (name) {
-            let that = this;
-            var customHandle = that.propData[name];
-            customHandle &&
-                customHandle.forEach((item) => {
-                    window[item.name] &&
-                        window[item.name].call(this, {
-                            ...that.commonParam(),
-                            customParam: item.param,
-                            _this: that,
-                            activeKey: that.activeTab,
-                            allKey: that.tabList
-                        });
+            var customHandle = this.propData[name];
+            customHandle && customHandle.forEach((item) => {
+                window[item.name] && window[item.name].call(this, {
+                    ...this.commonParam(),
+                    customParam: item.param,
+                    _this: this,
+                    activeKey: this.activeTab,
+                    allKey: this.tabList
                 });
+            });
         },
         /**
          * 通用的url参数对象
@@ -120,11 +94,7 @@ export default {
         commonParam () {
             let urlObject = IDM.url.queryObject();
             var params = {
-                pageId:
-                    window.IDM.broadcast && window.IDM.broadcast.pageModule
-                        ? window.IDM.broadcast.pageModule.id
-                        : "",
-                urlData: JSON.stringify(urlObject),
+                pageId: window.IDM.broadcast && window.IDM.broadcast.pageModule ? window.IDM.broadcast.pageModule.id : "", urlData: JSON.stringify(urlObject),
             };
             return params;
         },
@@ -183,6 +153,8 @@ export default {
          */
         convertAttrToStyleObject () {
             var styleObject = {};
+            let contentStyleObject = {};
+            let lineStyleObject = {};
             if (this.propData.bgSize && this.propData.bgSize == "custom") {
                 styleObject["background-size"] = (this.propData.bgSizeWidth ? this.propData.bgSizeWidth.inputVal + this.propData.bgSizeWidth.selectVal : "auto") + " " + (this.propData.bgSizeHeight ? this.propData.bgSizeHeight.inputVal + this.propData.bgSizeHeight.selectVal : "auto")
             } else if (this.propData.bgSize) {
@@ -207,7 +179,7 @@ export default {
                             break;
                         case "bgColor":
                             if (element && element.hex8) {
-                                styleObject["background-color"] = element.hex8;
+                                contentStyleObject["background-color"] = element.hex8;
                             }
                             break;
                         case "box":
@@ -301,11 +273,26 @@ export default {
                             styleObject["line-height"] = element.fontLineHeight + (element.fontLineHeightUnit == "-" ? "" : element.fontLineHeightUnit);
                             styleObject["text-align"] = element.fontTextAlign;
                             styleObject["text-decoration"] = element.fontDecoration;
+                            contentStyleObject["font-family"] = element.fontFamily;
+                            if (element.fontColors.hex8) {
+                                contentStyleObject["color"] = element.fontColors.hex8;
+                            }
+                            contentStyleObject["font-weight"] = element.fontWeight && element.fontWeight.split(" ")[0];
+                            contentStyleObject["font-style"] = element.fontStyle;
+                            contentStyleObject["font-size"] = element.fontSize + element.fontSizeUnit;
+                            contentStyleObject["line-height"] = element.fontLineHeight + (element.fontLineHeightUnit == "-" ? "" : element.fontLineHeightUnit);
+                            contentStyleObject["text-align"] = element.fontTextAlign;
+                            contentStyleObject["text-decoration"] = element.fontDecoration;
+                            break;
+                        case "lineWidth":
+                            lineStyleObject['width'] = element;
                             break;
                     }
                 }
             }
             IDM.setStyleToPageHead(this.moduleObject.id + "", styleObject);
+            IDM.setStyleToPageHead(this.moduleObject.id + " .van-tabs__line", lineStyleObject);
+            IDM.setStyleToPageHead(this.moduleObject.id + " .van-tab", contentStyleObject);
         },
         /**
          * 把属性参数转换成内部容器样式对象
@@ -510,10 +497,11 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-.idm_itabs_box {
-    .ant-tabs-bar {
-        margin: 0 0 0 0;
+<style  lang="scss">
+.van-tabs {
+    .van-tabs__nav {
+        margin: 0;
+        border: none;
     }
 }
 </style>

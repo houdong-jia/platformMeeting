@@ -124,6 +124,20 @@
                     "bindKey": "forceRender",
                     "desc": "选用此项则被隐藏的tab默认不渲染dom，点击的时候第一次去渲染tab",
                     "default": false
+                },
+                {
+                    "type": "switch",
+                    "layoutType": "inline",
+                    "text": "显示红点",
+                    "bindKey": "isShowDot",
+                    "default": false
+                },
+                {
+                    "type": "switch",
+                    "layoutType": "inline",
+                    "text": "显示数据",
+                    "bindKey": "isShowNum",
+                    "default": false
                 }
             ]
         },
@@ -342,6 +356,23 @@
                     "layoutType": "block",
                     "text": "文字",
                     "bindKey": "font"
+                },
+                {
+                    "type": "colorPicker",
+                    "layoutType": "inline",
+                    "text": "选中字体颜色",
+                    "bindKey": "activeColor",
+                    "placeholder": "请选择颜色",
+                    "default": {}
+                },
+                {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "底线宽度",
+                    "desc": "默认单位为px",
+                    "bindKey": "lineWidth",
+                    "width": "40",
+                    "default": "40"
                 }
             ]
         },
